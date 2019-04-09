@@ -4,5 +4,5 @@ My 2nd Desktop Application using the Standard API of twitter in order to get Twe
 <br><p>
 <center><font size=72><b>*** This Porject is Under Construction***
 </p>
-<img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/twitter.gif">  
+<img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/twitter.gif">  
   
