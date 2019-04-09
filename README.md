@@ -1,4 +1,4 @@
-# TwiterAPI Data Mining Final Project
+# TwitterAPI Data Mining Final Project
 My 2nd Desktop Application using the Standard API of twitter in order to get Tweets & their analysis.
 
 <h1><p>
