@@ -2,14 +2,11 @@
 My 2nd Desktop Application using the Standard API of twitter in order to get Tweets & their analysis.
 
 # 1st stage
-> #### Description:
 >A Python Desktop Application which has the next abilities:
 >1. Manage a list of hashtags by add/remove buttons.
 >2. Set number of tweets per hashtag.
 >3. Extract selected data of tweets to Excel file - each tag gets its own sheet with its name.
 >4. Status bar for status notifications.
-
-
 
 ## To-Do List
 >1. Generic Twitter Cerdinals - enter your own user credentials to access Twitter API
@@ -23,6 +20,6 @@ My 2nd Desktop Application using the Standard API of twitter in order to get Twe
 <img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/twitter.gif">  
 
 ## Thanks
-####Thanks <a href="https://github.com/vprusso/youtube_tutorials/tree/master/twitter_python">vprusso</a> for great explnation on how to use tweepy.
+Thanks <a href="https://github.com/vprusso/youtube_tutorials/tree/master/twitter_python">vprusso</a> for great explnation on how to use tweepy.
 
   
