@@ -17,7 +17,10 @@ My 2nd Desktop Application using the Standard API of twitter in order to get Twe
 
 
 ## Quick-Preview
-<img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/twitter.gif">  
+<img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/twitter.gif">
+
+## Quick Peek
+<img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/popular_word.png">
 
 ## Thanks
 Thanks <a href="https://github.com/vprusso/youtube_tutorials/tree/master/twitter_python">vprusso</a> for great explnation on how to use tweepy.
