@@ -28,7 +28,7 @@ My 2nd Desktop Application using the Standard API of twitter in order to get Twe
 <img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/graph.png">
 
 ## Thanks
-><a href="https://github.com/vprusso/youtube_tutorials/tree/master/twitter_python">vprusso</a> - great explnation on how to use tweepy.
-><a href="https://developer.twitter.com/en/docs">Twitter API Developer Docs</a>
-><a href="http://docs.tweepy.org">Tweepy Documentation</a>
-><a href="https://www.earthdatascience.org/courses/earth-analytics-python/using-apis-natural-language-processing-twitter/calculate-tweet-word-frequencies-in-python/">Earth Lab</a>
+>1. <a href="https://github.com/vprusso/youtube_tutorials/tree/master/twitter_python">vprusso</a> - great explnation on how to use tweepy.
+>2. <a href="https://developer.twitter.com/en/docs">Twitter API Developer Docs</a>
+>3. <a href="http://docs.tweepy.org">Tweepy Documentation</a>
+>4. <a href="https://www.earthdatascience.org/courses/earth-analytics-python/using-apis-natural-language-processing-twitter/calculate-tweet-word-frequencies-in-python/">Earth Lab</a>
