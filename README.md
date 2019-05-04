@@ -31,4 +31,4 @@ My 2nd Desktop Application using the Standard API of twitter in order to get Twe
 ><a href="https://github.com/vprusso/youtube_tutorials/tree/master/twitter_python">vprusso</a> - great explnation on how to use tweepy.
 ><a href="https://developer.twitter.com/en/docs">Twitter API Developer Docs</a>
 ><a href="http://docs.tweepy.org">Tweepy Documentation</a>
-><a href="https://www.earthdatascience.org/courses/earth-analytics-python/using-apis-natural-language-processing-twitter/calculate-tweet-word-frequencies-in-python/>Earth Lab</a>
+><a href="https://www.earthdatascience.org/courses/earth-analytics-python/using-apis-natural-language-processing-twitter/calculate-tweet-word-frequencies-in-python/">Earth Lab</a>
