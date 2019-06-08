@@ -1,7 +1,7 @@
 # TwitterAPI Data Mining Final Project
 My 2nd Desktop Application using the Standard API of twitter in order to get Tweets & their analysis.
 
-<p align="center">Be sure to <a href="https://github.com/natylaza89/TwitterAPI_Data_Mining/stargazers><g-emoji class="g-emoji" alias="star" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2b50.png">⭐️</g-emoji></a> my repo if you find it helpfull for you :) <a href="https://www.paypal.me/NatyLaza"><br><img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/coffee.png">
+<p align="center">Be sure to<a href="https://github.com/natylaza89/TwitterAPI_Data_Mining/stargazers"> <g-emoji class="g-emoji" alias="star" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2b50.png">⭐️</g-emoji> </a>my repo if you find it helpfull for you :) <a href="https://www.paypal.me/NatyLaza"><br><img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/coffee.png">
 </a></p>
 
 # 1st stage
