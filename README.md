@@ -1,6 +1,9 @@
 # TwitterAPI Data Mining Final Project
 My 2nd Desktop Application using the Standard API of twitter in order to get Tweets & their analysis.
 
+<p align="center">Be sure to <g-emoji class="g-emoji" alias="star" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2b50.png">⭐️</g-emoji> my repo if you find it helpfull for you :) <a href="paypal.me/NatyLaza"><img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/coffee.png">
+</a></p>
+
 # 1st stage
 >1. Manage a list of hashtags by add/remove buttons.
 >2. Set number of tweets per hashtag.
