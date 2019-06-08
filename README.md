@@ -15,17 +15,15 @@ My 2nd Desktop Application using the Standard API of twitter in order to get Twe
 	- Most User's Source
 	- Graphs of analysis
 
-## To-Do List
->1. Generic Twitter Cerdinals - enter your own user credentials to access Twitter API.
->2. Save/Load User credentials (Serialization).
->3. Design of excel file.
->4. Extra Hashtags.
->5. Unitest Codes.
+# Final stage
+>1. Using QThreads for the searching proccess.
+>2. Splitting code's files.
+>3. Add a sheet to be used as a sort of "data base" for future macro action.
+>4. Progress Bar to present current status of the searching action.
 
 
 ## Quick-Preview
 <img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/twitter.gif">
-<img src="https://github.com/natylaza89/TwiterAPI_Data_Mining/blob/master/graph.png">
 
 ## Thanks
 >1. <a href="https://github.com/vprusso/youtube_tutorials/tree/master/twitter_python">vprusso</a> - great explnation on how to use tweepy.
