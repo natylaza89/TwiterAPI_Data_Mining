@@ -46,6 +46,10 @@ class ThreadsClass(QObject):
         pb.setMaximum(100)
         pb.setWindowTitle("Searching Progress Bar")
         pb.setWindowIcon(QIcon('images/icon.ico'))
+        #pb.setStyleSheet("QProgressBar::chunk {background:#69c4e7}")
+        pb.setStyleSheet("QProgressBar::chunk {background: qlineargradient(x1: 0, y1: 0.5, x2: 1, y2: 0.5, stop: 0"
+                         "#69c4e7, stop: 1 white);text-align: center }"
+                         "QProgressBar {text-align: center;}")
 
         return pb
 
@@ -119,6 +123,13 @@ class ThreadsClass(QObject):
 
                 # Hiding the Progress Bar
                 self.pb.close()
+
+                # Disconnect from the stream
+                self.app.stream.disconnect()
+
+                # Terminate and delete the search thread.
+                self.app.search_thread.terminate()
+                del self.app.search_thread
 
                 # Emiting the tweets list of lists back to data_and_analasys_to_excel method.
                 self.signal.emit(self.tweet_matrix)

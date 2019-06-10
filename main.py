@@ -6,8 +6,8 @@ import pandas as pd
 
 from PyQt5.QtCore import (QSize, QThread)
 from PyQt5.QtGui import (QIcon, QPixmap, QImage, QPalette, QBrush)
-from PyQt5.QtWidgets import (QTextBrowser, QMainWindow, QApplication, QLabel, QLineEdit, QPushButton, QMessageBox,
-                             QAction, QFileDialog)
+from PyQt5.QtWidgets import (QTextBrowser, QMainWindow, QApplication, QLabel, QLineEdit,QListWidget, QPushButton,
+                             QMessageBox, QAction, QFileDialog, QDialog, QInputDialog)
 
 from tweepy import (API, OAuthHandler)
 
@@ -80,6 +80,7 @@ class App(QMainWindow):
         self.__statusbar_table = self.__create_text_browser(250, 485, 800, 50, "font-size: 30px;")
         self.__twitter_client = None
         self.__tweet_analyzer = None
+        #self.search_thread = None
         self.__init_ui()
 
     @classmethod
@@ -171,6 +172,7 @@ class App(QMainWindow):
         """
 
         self.__tweet_matrix = result
+        self.__statusbar_table.clear()
 
         try:
             if self.__tweet_matrix:
@@ -234,10 +236,13 @@ class App(QMainWindow):
                 writer.save()
 
                 self.__tweet_matrix.clear()
-
-                self.__statusbar_table.clear()
                 self.__statusbar_table.append("<center>Excel file was created successfully!")
 
+
+                #self.__tweet_analyzer = TweetAnalyzer(self)
+
+                del self.__twitter_client
+                del self.__tweet_analyzer
         except IndexError:
             print("Error on line {}".format(sys.exc_info()[-1].tb_lineno))
         except SystemError as se:
@@ -261,7 +266,7 @@ class App(QMainWindow):
             self.__twitter_client (API): API instance.
             self.__tweet_analyzer ('): Initializing TweetAnalyzer object in order to use its methods.
             self.__search (ThreadsClass): Our threads class in order to perform our search via twitter api.
-            self.__search_thread (QThread): An object to control the threads.
+            self.search_thread (QThread): An object to control the threads.
 
         Returns:
             None
@@ -273,20 +278,21 @@ class App(QMainWindow):
         if self.__tag_list and self.__num_of_tweets > 0:
 
             try:
+                    # Creating a Stream Channel with Twitter API
+                    self.__twitter_client = App.__twitter_client_auth(self)
+                    self.__tweet_analyzer = TweetAnalyzer(self)
 
-                # Creating a Stream Channel with Twitter API
-                self.__twitter_client = App.__twitter_client_auth(self)
-                self.__tweet_analyzer = TweetAnalyzer(self)
+                    self.__statusbar_table.append("<center>Start Searching... Please Wait!")
 
-                self.__statusbar_table.append("<center>Start Searching... Please Wait!")
+                    self.__search = ThreadsClass(self.__twitter_client, self.__num_of_tweets, self.__tag_list,self.__statusbar_table, self)
+                    self.search_thread = QThread()
+                    self.search_thread.started.connect(self.__search.run)  # Init worker run() at startup (optional)
+                    self.__search.signal.connect(self.__data_and_analysis_to_excel)# Connect your signals/slots
+                    self.__search.moveToThread(self.search_thread)  # Move the Worker object to the Thread object
+                    self.search_thread.start()
 
-                self.__search = ThreadsClass(self.__twitter_client, self.__num_of_tweets, self.__tag_list,self.__statusbar_table, self)
-                self.__search_thread = QThread()
-                self.__search_thread.started.connect(self.__search.run)  # Init worker run() at startup (optional)
-                self.__search.signal.connect(self.__data_and_analysis_to_excel)# Connect your signals/slots
-                self.__search.moveToThread(self.__search_thread)  # Move the Worker object to the Thread object
-                self.__search_thread.start()
-
+            except AssertionError as ae:
+                self.__statusbar_table.append("<center>AssertionError: {}".format(ae))
             except IndexError:
                 print("Error on line {}".format(sys.exc_info()[-1].tb_lineno))
             except SystemError as se:
@@ -542,13 +548,9 @@ class App(QMainWindow):
                     if self.__tag_list.get(text) is None:
 
                         self.__tag_list[text] = text
-
-                        # Clear Status Bar
-                        self.__hashtag_table.clear()
-
                         # Updating the Hashtag Table in the UI
-                        for tag in self.__tag_list:
-                            self.__hashtag_table.append(tag)
+                        row = self.__hashtag_table.currentRow()
+                        self.__hashtag_table.insertItem(row, text)
 
                         # Update the user that the hashtags has been delelted
                         self.__statusbar_table.append('<center>{}'.format(text) + ' Has Been Added!')
@@ -587,29 +589,65 @@ class App(QMainWindow):
         # Status Bar
         self.__statusbar_table.clear()
 
-        # Gets the text from input line
-        text = self.__hashtag_line.text()
-
         try:
+
+            # Gets the text from input line
+            row = self.__hashtag_table.currentRow()
+
+            assert row >= 0, "You Didn't Choose Hashtag To Delete!"
+            item = self.__hashtag_table.item(row)
+            text = str(item.text())
 
             del self.__tag_list[text]
 
-            # Clear Hashtag Table & Status Bar
-            self.__hashtag_table.clear()
-
-            # Update Tag List Table
-            for item in self.__tag_list:
-                self.__hashtag_table.append(item)
+            item = self.__hashtag_table.takeItem(row)
+            del item
 
             # Update the user that the hashtags has been delelted
             self.__statusbar_table.append("<center>{} Has Been Deleted!".format(text))
 
+        except AssertionError as ae:
+            self.__statusbar_table.append("<center>AssertionError: {}".format(ae))
         except Exception as e:
+            self.__statusbar_table.append("<center>Error Has Occurred: {}".format(e))
 
-            if text:
-                self.__statusbar_table.append("<center>ValueError: {} Doesn't Exist, Couldn't Delete!".format(e))
-            else:
-                self.__statusbar_table.append("<center>ValueError: Empty Input - Couldn't Delete!")
+    def __edit_hashtag_method(self):
+
+        self.__statusbar_table.clear()
+
+        try:
+            row = self.__hashtag_table.currentRow()
+            item = self.__hashtag_table.item(row)
+            assert item, "Hashtag List is Empty!"
+
+            text = str(item.text())
+
+            if item is not None:
+                title = "Edit {}".format(text)
+                string, ok = QInputDialog.getText(self, title, title,
+                                                  QLineEdit.Normal, item.text())
+                if ok:
+                    if string:
+                        if string[0] is '#':
+                            if string not in self.__tag_list:
+                                item.setText(string)
+
+                                del self.__tag_list[text]
+                                self.__tag_list[string] = string
+                                self.__statusbar_table.append(
+                                    "<center>Hashtag {} Has Been Changed to {}!".format(text, string))
+                            else:
+                                self.__statusbar_table.append("<center>Couldn't change {} because of duplicate!".format(text))
+                        else:
+                            self.__statusbar_table.append("<center>Wrong Input! 1st Char isnt '#', Please Try Again!")
+                    else:
+                        self.__statusbar_table.append("<center>Couldn't commit the change due to an empty input!")
+                else:
+                    self.__statusbar_table.append("<center>Edit Canceled!")
+        except AssertionError as ve:
+            self.__statusbar_table.append("<center>AssertionError: {}".format(ve))
+        except Exception as e:
+            self.__statusbar_table.append("<center>Error Has Occurred: {}".format(e))
 
     def __clear_hashtag_list(self):
 
@@ -698,8 +736,9 @@ class App(QMainWindow):
             self.__hashtag_table.clear()
 
             # Updating the Hashtag Table in the UI
+            row = self.__hashtag_table.currentRow()
             for tag in self.__tag_list:
-                self.__hashtag_table.append(tag)
+                self.__hashtag_table.insertItem(row, tag)
 
         except FileNotFoundError as fnfe:
             self.__statusbar_table.append("<center>File Not Found Error: {}".format(fnfe))
@@ -885,7 +924,9 @@ class App(QMainWindow):
 
         """ Left Side """
         # Hashtag list Display
-        self.__hashtag_table = self.__create_text_browser(175, 200, 350, 200, "font-size: 15px;")
+        self.__hashtag_table = QListWidget(self)
+        self.__hashtag_table.setGeometry(175, 200, 350, 200)
+        self.__hashtag_table.setStyleSheet("font-size: 15px;")
 
         """ Center & Right Side """
         # Hashtag Edit Line, Add & Remove hashtags.
@@ -896,8 +937,8 @@ class App(QMainWindow):
                                                          self.__remove_hashtag_method)
 
         # Clear, Save & Load Hashtaglist
-        self.__clear_hashtag_list_btn = self.__create_button(190, 40, 545, 250, 'images/clear_hashtag_list.png',
-                                                         self.__clear_hashtag_list)
+        self.__edit_hashtag_list_btn = self.__create_button(190, 40, 545, 250, 'images/edit_hashtag.png',
+                                                         self.__edit_hashtag_method)
         self.__save_hashtag_list_btn = self.__create_button(190, 40, 750, 250, 'images/save_hashtag_list.png',
                                                         self.__save_hashtag_to_json)
         self.__load_hashtag_list_btn = self.__create_button(190, 40, 950, 250, 'images/load_hashtag_list.png',
@@ -907,7 +948,8 @@ class App(QMainWindow):
         self.__numberoftweets_insert_line = self.__create_line(200, 40, 540, 300, 15, "Enter A Number...")
         self.__set_numberoftweets_button = self.__create_button(190, 40, 750, 300, 'images/set_number_of_tweets.png',
                                                             self.__insert_number_of_tweets_method)
-
+        self.__clear_hashtag_list_btn = self.__create_button(190, 40, 950, 300, 'images/clear_hashtag_list.png',
+                                                         self.__clear_hashtag_list)
         """" Bottom Frame """
 
         # Start Button & Status Bar
